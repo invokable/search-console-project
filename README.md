@@ -35,6 +35,47 @@ php artisan make:command Hello --command=hello
 ```
 This will create a new command class in `app/Console/Commands/Hello.php`. The `--command=hello` option sets the invokable name of your command, so you can run it later using `php artisan hello`.
 
+### Google Search Console Report
+
+This starter includes a pre-built Search Console report command that demonstrates how to integrate with Google APIs using service account authentication.
+
+```shell
+php artisan sc:report
+```
+
+#### Configuration
+
+To use the Search Console command, you need to configure service account authentication:
+
+1. **Create a Google Service Account:**
+   - Go to [Google Cloud Console](https://console.cloud.google.com/)
+   - Create a new project or select an existing one
+   - Enable the Google Search Console API
+   - Create a service account and download the JSON credentials
+
+2. **Configure Environment Variables:**
+   ```env
+   GOOGLE_APPLICATION_NAME=YourAppName
+   GOOGLE_SERVICE_ENABLED=true
+   GOOGLE_SERVICE_ACCOUNT_JSON_LOCATION={"type":"service_account","project_id":"..."}
+   ```
+
+3. **Add Service Account to Search Console:**
+   - Go to [Google Search Console](https://search.google.com/search-console)
+   - Add your service account email as a user with permissions
+
+#### GitHub Actions Configuration
+
+For GitHub Actions, store the service account JSON as a repository secret:
+
+```yaml
+- name: Run Search Console Report
+  run: php artisan sc:report
+  env:
+    GOOGLE_SERVICE_ENABLED: true
+    GOOGLE_SERVICE_ACCOUNT_JSON_LOCATION: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
+```
+
 ### Task Scheduling in GitHub Actions
 
 [cron.yml](./.github/workflows/cron.yml) is an example of how to run the command in GitHub Actions.
