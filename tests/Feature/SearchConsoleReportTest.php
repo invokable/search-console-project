@@ -17,7 +17,7 @@ class SearchConsoleReportTest extends TestCase
     {
         config(['google.service.enable' => true]);
         config(['google.service.file' => ['invalid' => 'credentials']]);
-        
+
         $this->artisan('sc:report')
             ->assertExitCode(1);
     }
@@ -41,7 +41,7 @@ class SearchConsoleReportTest extends TestCase
 
         // This will still fail due to network/authentication, but should not fail due to missing config
         $result = $this->artisan('sc:report');
-        
+
         // The command should attempt to execute (not fail with config error)
         // We expect it to fail with authentication/network error which is expected
         $this->assertTrue(true); // This test verifies the command can be executed with proper config
