@@ -70,6 +70,16 @@ class SearchConsoleReportNotification extends Notification
      */
     private function generateSummary(): array
     {
+        if (! is_array($this->reportData) && ! is_object($this->reportData)) {
+            return [
+                'totalClicks' => 0,
+                'totalImpressions' => 0,
+                'averageCtr' => 0,
+                'averagePosition' => 0,
+                'sites' => [],
+            ];
+        }
+
         $totalClicks = 0;
         $totalImpressions = 0;
         $totalCtr = 0;
@@ -77,35 +87,55 @@ class SearchConsoleReportNotification extends Notification
         $siteCount = 0;
         $sites = [];
 
-        foreach ($this->reportData as $siteUrl => $siteData) {
-            $siteClicks = 0;
-            $siteImpressions = 0;
-            $siteCtr = 0;
-            $sitePosition = 0;
-            $rowCount = 0;
-
-            if (isset($siteData->rows) && is_array($siteData->rows)) {
-                foreach ($siteData->rows as $row) {
-                    $siteClicks += $row->clicks ?? 0;
-                    $siteImpressions += $row->impressions ?? 0;
-                    $siteCtr += $row->ctr ?? 0;
-                    $sitePosition += $row->position ?? 0;
-                    $rowCount++;
+        try {
+            foreach ($this->reportData as $siteUrl => $siteData) {
+                if (! is_object($siteData) && ! is_array($siteData)) {
+                    continue;
                 }
+
+                $siteClicks = 0;
+                $siteImpressions = 0;
+                $siteCtr = 0;
+                $sitePosition = 0;
+                $rowCount = 0;
+
+                if (isset($siteData->rows) && is_array($siteData->rows)) {
+                    foreach ($siteData->rows as $row) {
+                        if (! is_object($row)) {
+                            continue;
+                        }
+
+                        $siteClicks += $row->clicks ?? 0;
+                        $siteImpressions += $row->impressions ?? 0;
+                        $siteCtr += $row->ctr ?? 0;
+                        $sitePosition += $row->position ?? 0;
+                        $rowCount++;
+                    }
+                }
+
+                $sites[$siteUrl] = [
+                    'clicks' => $siteClicks,
+                    'impressions' => $siteImpressions,
+                    'ctr' => $rowCount > 0 ? ($siteCtr / $rowCount) * 100 : 0,
+                    'position' => $rowCount > 0 ? $sitePosition / $rowCount : 0,
+                ];
+
+                $totalClicks += $siteClicks;
+                $totalImpressions += $siteImpressions;
+                $totalCtr += $sites[$siteUrl]['ctr'];
+                $totalPosition += $sites[$siteUrl]['position'];
+                $siteCount++;
             }
+        } catch (\Exception $e) {
+            \Log::error('Error generating Search Console report summary: '.$e->getMessage());
 
-            $sites[$siteUrl] = [
-                'clicks' => $siteClicks,
-                'impressions' => $siteImpressions,
-                'ctr' => $rowCount > 0 ? ($siteCtr / $rowCount) * 100 : 0,
-                'position' => $rowCount > 0 ? $sitePosition / $rowCount : 0,
+            return [
+                'totalClicks' => 0,
+                'totalImpressions' => 0,
+                'averageCtr' => 0,
+                'averagePosition' => 0,
+                'sites' => [],
             ];
-
-            $totalClicks += $siteClicks;
-            $totalImpressions += $siteImpressions;
-            $totalCtr += $sites[$siteUrl]['ctr'];
-            $totalPosition += $sites[$siteUrl]['position'];
-            $siteCount++;
         }
 
         return [
@@ -124,8 +154,10 @@ class SearchConsoleReportNotification extends Notification
      */
     public function toArray(object $notifiable): array
     {
+        $summary = $this->generateSummary();
+
         return [
-            'report_data' => $this->reportData,
+            'summary' => $summary,
             'generated_at' => now()->toISOString(),
         ];
     }
