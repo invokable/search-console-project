@@ -8,6 +8,8 @@ class SearchConsoleReportTest extends TestCase
 {
     public function test_search_console_report_command_exists(): void
     {
+        config(['google.service.enable' => false]);
+
         $this->artisan('sc:report')
             ->expectsOutput('This command requires Google Search Console service account authentication.')
             ->assertExitCode(1);
