@@ -2,7 +2,10 @@
 
 namespace App\Console\Commands;
 
+use App\Notifications\SearchConsoleReportNotification;
+use App\Search\ReportQuery;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Notification;
 use Revolution\Google\SearchConsole\Facades\SearchConsole;
 
 class SearchConsoleReport extends Command
@@ -38,7 +41,12 @@ class SearchConsoleReport extends Command
 
             $this->info('Found '.count($sites->siteEntry).' site(s):');
             foreach ($sites->siteEntry as $site) {
-                $this->info("Site: $site->siteUrl - $site->permissionLevel");
+                //$this->info("Site: $site->siteUrl - $site->permissionLevel");
+                $query = SearchConsole::query($site->siteUrl, new ReportQuery());
+
+                // Results are summarized and sent via email
+                Notification::route('mail', [config('mail.from.address') => config('mail.from.name')])
+                    ->notify(new SearchConsoleReportNotification($query));
             }
 
             return 0;
