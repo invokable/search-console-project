@@ -43,7 +43,6 @@ class SearchConsoleReport extends Command
 
             $reportData = [];
             foreach ($sites->siteEntry as $site) {
-                // $this->info("Site: $site->siteUrl - $site->permissionLevel");
                 $reportData[$site->siteUrl] = SearchConsole::query($site->siteUrl, new ReportQuery);
             }
 
