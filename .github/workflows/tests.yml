@@ -36,9 +36,3 @@ jobs:
 
       - name: Run Tests
         run: php artisan test
-
-      - name: Code Coverage
-        uses: qltysh/qlty-action/coverage@v1
-        with:
-          oidc: true
-          files: build/logs/clover.xml
