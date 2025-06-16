@@ -11,5 +11,7 @@ class ReportQuery extends AbstractQuery
         $this->setStartDate(now()->subDays(30)->toDateString());
         $this->setEndDate(now()->toDateString());
         $this->setDimensions(['date']);
+        $this->setRowLimit(1000);
+        $this->setStartRow(0);
     }
 }
