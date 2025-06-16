@@ -21,7 +21,6 @@ This is a Laravel application that provides automated Google Search Console repo
 - Laravel 12.x (PHP 8.4)
 - Google Search Console API (via revolution/laravel-google-searchconsole)
 - AWS SES for email delivery
-- SQLite database (simple setup)
 - GitHub Actions for CI/CD
 
 ## Development Setup
@@ -29,7 +28,6 @@ This is a Laravel application that provides automated Google Search Console repo
 ### Prerequisites
 - PHP 8.4+
 - Composer
-- SQLite
 
 ### Installation Steps
 ```bash
