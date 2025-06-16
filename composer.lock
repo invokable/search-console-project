@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "346f9035b38adf69e8218648167ef245",
+    "content-hash": "66a687c0b2d2c9562d70cec4bf566030",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -62,16 +62,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.344.6",
+            "version": "3.344.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "eb0bc621472592545539329499961a15a3f9f6dc"
+                "reference": "64ccde0a674425ea902232a6f7aa1a07dfcfe861"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/eb0bc621472592545539329499961a15a3f9f6dc",
-                "reference": "eb0bc621472592545539329499961a15a3f9f6dc",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/64ccde0a674425ea902232a6f7aa1a07dfcfe861",
+                "reference": "64ccde0a674425ea902232a6f7aa1a07dfcfe861",
                 "shasum": ""
             },
             "require": {
@@ -153,9 +153,9 @@
             "support": {
                 "forum": "https://github.com/aws/aws-sdk-php/discussions",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.344.6"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.344.7"
             },
-            "time": "2025-06-12T18:03:59+00:00"
+            "time": "2025-06-16T18:05:39+00:00"
         },
         {
             "name": "brick/math",
@@ -866,7 +866,7 @@
         },
         {
             "name": "google/apiclient-services",
-            "version": "v0.398.0",
+            "version": "v0.399.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-api-php-client-services.git",
@@ -904,7 +904,7 @@
             ],
             "support": {
                 "issues": "https://github.com/googleapis/google-api-php-client-services/issues",
-                "source": "https://github.com/googleapis/google-api-php-client-services/tree/v0.398.0"
+                "source": "https://github.com/googleapis/google-api-php-client-services/tree/v0.399.0"
             },
             "time": "2025-06-04T17:28:44+00:00"
         },
@@ -4004,16 +4004,16 @@
         },
         {
             "name": "revolution/laravel-google-searchconsole",
-            "version": "4.1.1",
+            "version": "4.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/invokable/laravel-google-searchconsole.git",
-                "reference": "792c9b6595bb1c6db1233a469f81f9c7f7936a7d"
+                "reference": "e3b420b380b5f228aba660c6640d90ed656e17c8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/invokable/laravel-google-searchconsole/zipball/792c9b6595bb1c6db1233a469f81f9c7f7936a7d",
-                "reference": "792c9b6595bb1c6db1233a469f81f9c7f7936a7d",
+                "url": "https://api.github.com/repos/invokable/laravel-google-searchconsole/zipball/e3b420b380b5f228aba660c6640d90ed656e17c8",
+                "reference": "e3b420b380b5f228aba660c6640d90ed656e17c8",
                 "shasum": ""
             },
             "require": {
@@ -4056,7 +4056,7 @@
             ],
             "support": {
                 "issues": "https://github.com/invokable/laravel-google-searchconsole/issues",
-                "source": "https://github.com/invokable/laravel-google-searchconsole/tree/4.1.1"
+                "source": "https://github.com/invokable/laravel-google-searchconsole/tree/4.1.2"
             },
             "funding": [
                 {
@@ -4064,30 +4064,30 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-06-15T11:00:37+00:00"
+            "time": "2025-06-16T07:26:01+00:00"
         },
         {
             "name": "revolution/laravel-google-sheets",
-            "version": "7.1.0",
+            "version": "7.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/invokable/laravel-google-sheets.git",
-                "reference": "d63c4f3b2b2385bd4bbf28e3a6b52d342536f0f9"
+                "reference": "69cfe391bec55f309f842189d8eb043730677f48"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/invokable/laravel-google-sheets/zipball/d63c4f3b2b2385bd4bbf28e3a6b52d342536f0f9",
-                "reference": "d63c4f3b2b2385bd4bbf28e3a6b52d342536f0f9",
+                "url": "https://api.github.com/repos/invokable/laravel-google-sheets/zipball/69cfe391bec55f309f842189d8eb043730677f48",
+                "reference": "69cfe391bec55f309f842189d8eb043730677f48",
                 "shasum": ""
             },
             "require": {
                 "google/apiclient": "^2.16",
-                "illuminate/container": "^11.0||^12.0",
                 "illuminate/support": "^11.0||^12.0",
                 "php": "^8.2"
             },
             "require-dev": {
-                "orchestra/testbench": "^9.0",
+                "laravel/pint": "^1.22",
+                "orchestra/testbench": "^10.0",
                 "pulkitjalan/google-apiclient": "^6.2"
             },
             "type": "library",
@@ -4126,9 +4126,15 @@
                 "sheets"
             ],
             "support": {
-                "source": "https://github.com/invokable/laravel-google-sheets/tree/7.1.0"
+                "source": "https://github.com/invokable/laravel-google-sheets/tree/7.1.1"
             },
-            "time": "2025-02-23T03:11:06+00:00"
+            "funding": [
+                {
+                    "url": "https://github.com/invokable",
+                    "type": "github"
+                }
+            ],
+            "time": "2025-06-13T05:04:57+00:00"
         },
         {
             "name": "symfony/clock",
@@ -8942,7 +8948,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": "^8.2"
+        "php": "^8.4"
     },
     "platform-dev": {},
     "plugin-api-version": "2.6.0"
