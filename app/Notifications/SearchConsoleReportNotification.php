@@ -37,7 +37,7 @@ class SearchConsoleReportNotification extends Notification
     {
         $summary = $this->generateSummary();
 
-        $message = new MailMessage()
+        $message = (new MailMessage)
             ->subject('Search Console Daily Report - '.now()->format('Y-m-d'))
             ->greeting('Search Console Report Summary')
             ->line('Here is your daily Search Console performance summary for the last 30 days:')
