@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Notifications\SearchConsoleReportNotification;
 use App\Search\ReportQuery;
 use Illuminate\Support\Facades\Notification;
+use Mockery;
 use Revolution\Google\SearchConsole\Facades\SearchConsole;
 use Tests\TestCase;
 
@@ -58,7 +59,7 @@ class SearchConsoleReportTest extends TestCase
 
         SearchConsole::expects('query')
             ->twice()
-            ->with(\Mockery::type('string'), \Mockery::type(ReportQuery::class))
+            ->with(Mockery::type('string'), Mockery::type(ReportQuery::class))
             ->andReturn($mockReportData);
 
         // Run the command
@@ -187,7 +188,7 @@ class SearchConsoleReportTest extends TestCase
         // Mock SearchConsole query to throw an exception
         SearchConsole::expects('query')
             ->once()
-            ->with('https://example.com/', \Mockery::type(ReportQuery::class))
+            ->with('https://example.com/', Mockery::type(ReportQuery::class))
             ->andThrow(new \Exception('Query failed'));
 
         // Run the command
@@ -237,7 +238,7 @@ class SearchConsoleReportTest extends TestCase
 
         SearchConsole::expects('query')
             ->once()
-            ->with('https://example.com/', \Mockery::type(ReportQuery::class))
+            ->with('https://example.com/', Mockery::type(ReportQuery::class))
             ->andReturn($mockReportData);
 
         // Run the command
@@ -275,7 +276,7 @@ class SearchConsoleReportTest extends TestCase
 
         SearchConsole::expects('query')
             ->once()
-            ->with('https://example.com/', \Mockery::type(ReportQuery::class))
+            ->with('https://example.com/', Mockery::type(ReportQuery::class))
             ->andReturn($mockReportData);
 
         // Run the command
