@@ -6,6 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\Log;
 
 class SearchConsoleReportNotification extends Notification
 {
@@ -127,7 +128,7 @@ class SearchConsoleReportNotification extends Notification
                 $siteCount++;
             }
         } catch (\Exception $e) {
-            \Log::error('Error generating Search Console report summary: '.$e->getMessage());
+            Log::error('Error generating Search Console report summary: '.$e->getMessage());
 
             return [
                 'totalClicks' => 0,
