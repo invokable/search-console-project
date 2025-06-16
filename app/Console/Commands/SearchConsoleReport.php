@@ -40,14 +40,16 @@ class SearchConsoleReport extends Command
             }
 
             $this->info('Found '.count($sites->siteEntry).' site(s):');
+
+            $reportData = [];
             foreach ($sites->siteEntry as $site) {
                 //$this->info("Site: $site->siteUrl - $site->permissionLevel");
-                $query[$site->siteUrl] = SearchConsole::query($site->siteUrl, new ReportQuery());
+                $reportData[$site->siteUrl] = SearchConsole::query($site->siteUrl, new ReportQuery());
             }
 
             // Results are summarized and sent via email
             Notification::route('mail', [config('mail.from.address') => config('mail.from.name')])
-                ->notify(new SearchConsoleReportNotification($query));
+                ->notify(new SearchConsoleReportNotification($reportData));
 
             return 0;
         } catch (\Exception $e) {
