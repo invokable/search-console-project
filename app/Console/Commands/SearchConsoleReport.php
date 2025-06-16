@@ -27,7 +27,7 @@ class SearchConsoleReport extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): int
     {
         try {
             $this->info('Fetching Search Console sites...');
