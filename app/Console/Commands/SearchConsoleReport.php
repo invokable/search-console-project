@@ -47,7 +47,7 @@ class SearchConsoleReport extends Command
             }
 
             // Results are summarized and sent via email
-            Notification::route('mail', config('mail.to.address'))
+            Notification::route('mail', [config('mail.to.address') => config('mail.to.name')])
                 ->notify(new SearchConsoleReportNotification($reportData));
 
             return 0;
