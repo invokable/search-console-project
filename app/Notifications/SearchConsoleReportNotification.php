@@ -40,12 +40,10 @@ class SearchConsoleReportNotification extends Notification
 
         return (new MailMessage)
             ->subject('Search Console Daily Report - '.now()->format('Y-m-d'))
-            ->greeting('Search Console Report Summary')
-            ->line('Here is your daily Search Console performance summary for the last 7 days:')
-            ->line($markdownContent)
-            ->line('')
-            ->line('Report generated on '.now()->format('Y-m-d H:i:s T'))
-            ->salutation('Best regards, Your Search Console Monitor');
+            ->markdown('mail.report', [
+                'markdownContent' => $markdownContent,
+                'generatedAt' => now()->format('Y-m-d H:i:s T'),
+            ]);
     }
 
     /**
