@@ -8,7 +8,7 @@ class ReportQuery extends AbstractQuery
 {
     public function init(): void
     {
-        // Data is updated with a 3-day delay.
+        // Actual data is reflected with a three-day delay.
         // Fetch 7 days of data: from 10 to 3 days ago.
         // Ensures only complete data is included.
         $this->setStartDate(now()->subDays(10)->toDateString());
