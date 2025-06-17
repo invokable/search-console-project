@@ -4,7 +4,7 @@
 
 This is a Laravel application that provides automated Google Search Console reporting. The application:
 - Fetches Search Console data using Google's API with service account authentication
-- Generates daily performance reports (last 30 days)
+- Generates daily performance reports (last 7 days in markdown table format)
 - Sends formatted email reports via AWS SES
 - Runs automatically once daily via GitHub Actions at midnight UTC
 

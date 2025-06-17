@@ -35,58 +35,29 @@ class SearchConsoleReportNotification extends Notification
      */
     public function toMail(object $notifiable): MailMessage
     {
-        $summary = $this->generateSummary();
+        $dailyData = $this->generateDailyData();
+        $markdownContent = $this->buildMarkdownContent($dailyData);
 
-        $message = (new MailMessage)
+        return (new MailMessage)
             ->subject('Search Console Daily Report - '.now()->format('Y-m-d'))
             ->greeting('Search Console Report Summary')
-            ->line('Here is your daily Search Console performance summary for the last 30 days:')
+            ->line('Here is your daily Search Console performance summary for the last 7 days:')
+            ->line($markdownContent)
             ->line('')
-            ->line('**Overall Performance:**')
-            ->line('• Total Clicks: '.number_format($summary['totalClicks']))
-            ->line('• Total Impressions: '.number_format($summary['totalImpressions']))
-            ->line('• Average CTR: '.number_format($summary['averageCtr'], 2).'%')
-            ->line('• Average Position: '.number_format($summary['averagePosition'], 1))
-            ->line('')
-            ->line('**Site Breakdown:**');
-
-        foreach ($summary['sites'] as $siteUrl => $siteData) {
-            $message->line('')
-                ->line("**{$siteUrl}:**")
-                ->line('  • Clicks: '.number_format($siteData['clicks']))
-                ->line('  • Impressions: '.number_format($siteData['impressions']))
-                ->line('  • CTR: '.number_format($siteData['ctr'], 2).'%')
-                ->line('  • Avg Position: '.number_format($siteData['position'], 1));
-        }
-
-        $message->line('')
             ->line('Report generated on '.now()->format('Y-m-d H:i:s T'))
             ->salutation('Best regards, Your Search Console Monitor');
-
-        return $message;
     }
 
     /**
-     * Generate summary statistics from the report data.
+     * Generate daily data from the report data.
      */
-    private function generateSummary(): array
+    private function generateDailyData(): array
     {
         if (! is_array($this->reportData) && ! is_object($this->reportData)) {
-            return [
-                'totalClicks' => 0,
-                'totalImpressions' => 0,
-                'averageCtr' => 0,
-                'averagePosition' => 0,
-                'sites' => [],
-            ];
+            return [];
         }
 
-        $totalClicks = 0;
-        $totalImpressions = 0;
-        $totalCtr = 0;
-        $totalPosition = 0;
-        $siteCount = 0;
-        $sites = [];
+        $dailyData = [];
 
         try {
             foreach ($this->reportData as $siteUrl => $siteData) {
@@ -94,11 +65,7 @@ class SearchConsoleReportNotification extends Notification
                     continue;
                 }
 
-                $siteClicks = 0;
-                $siteImpressions = 0;
-                $siteCtr = 0;
-                $sitePosition = 0;
-                $rowCount = 0;
+                $dailyData[$siteUrl] = [];
 
                 if (isset($siteData->rows) && is_array($siteData->rows)) {
                     foreach ($siteData->rows as $row) {
@@ -106,46 +73,68 @@ class SearchConsoleReportNotification extends Notification
                             continue;
                         }
 
-                        $siteClicks += $row->clicks ?? 0;
-                        $siteImpressions += $row->impressions ?? 0;
-                        $siteCtr += $row->ctr ?? 0;
-                        $sitePosition += $row->position ?? 0;
-                        $rowCount++;
+                        // Each row represents one day's data
+                        $dailyData[$siteUrl][] = [
+                            'date' => $row->keys[0] ?? 'Unknown', // date is the first key when dimension is 'date'
+                            'clicks' => $row->clicks ?? 0,
+                            'impressions' => $row->impressions ?? 0,
+                            'ctr' => ($row->ctr ?? 0) * 100, // Convert to percentage
+                            'position' => $row->position ?? 0,
+                        ];
                     }
                 }
 
-                $sites[$siteUrl] = [
-                    'clicks' => $siteClicks,
-                    'impressions' => $siteImpressions,
-                    'ctr' => $rowCount > 0 ? ($siteCtr / $rowCount) * 100 : 0,
-                    'position' => $rowCount > 0 ? $sitePosition / $rowCount : 0,
-                ];
-
-                $totalClicks += $siteClicks;
-                $totalImpressions += $siteImpressions;
-                $totalCtr += $sites[$siteUrl]['ctr'];
-                $totalPosition += $sites[$siteUrl]['position'];
-                $siteCount++;
+                // Sort by date (newest first)
+                usort($dailyData[$siteUrl], function ($a, $b) {
+                    return strcmp($b['date'], $a['date']);
+                });
             }
         } catch (\Exception $e) {
-            Log::error('Error generating Search Console report summary: '.$e->getMessage());
+            Log::error('Error generating Search Console daily data: '.$e->getMessage());
 
-            return [
-                'totalClicks' => 0,
-                'totalImpressions' => 0,
-                'averageCtr' => 0,
-                'averagePosition' => 0,
-                'sites' => [],
-            ];
+            return [];
         }
 
-        return [
-            'totalClicks' => $totalClicks,
-            'totalImpressions' => $totalImpressions,
-            'averageCtr' => $siteCount > 0 ? $totalCtr / $siteCount : 0,
-            'averagePosition' => $siteCount > 0 ? $totalPosition / $siteCount : 0,
-            'sites' => $sites,
-        ];
+        return $dailyData;
+    }
+
+    /**
+     * Build markdown content with daily data tables.
+     */
+    private function buildMarkdownContent(array $dailyData): string
+    {
+        if (empty($dailyData)) {
+            return 'No data available for the selected period.';
+        }
+
+        $content = '';
+
+        foreach ($dailyData as $siteUrl => $siteRows) {
+            $content .= "\n\n## {$siteUrl}\n\n";
+
+            if (empty($siteRows)) {
+                $content .= "No data available for this site.\n";
+
+                continue;
+            }
+
+            // Create markdown table
+            $content .= "| Date | Clicks | Impressions | CTR (%) | Avg Position |\n";
+            $content .= "|------|--------|-------------|---------|---------------|\n";
+
+            foreach ($siteRows as $row) {
+                $content .= sprintf(
+                    "| %s | %s | %s | %.2f | %.1f |\n",
+                    $row['date'],
+                    number_format($row['clicks']),
+                    number_format($row['impressions']),
+                    $row['ctr'],
+                    $row['position']
+                );
+            }
+        }
+
+        return $content;
     }
 
     /**
@@ -155,10 +144,10 @@ class SearchConsoleReportNotification extends Notification
      */
     public function toArray(object $notifiable): array
     {
-        $summary = $this->generateSummary();
+        $dailyData = $this->generateDailyData();
 
         return [
-            'summary' => $summary,
+            'daily_data' => $dailyData,
             'generated_at' => now()->toISOString(),
         ];
     }

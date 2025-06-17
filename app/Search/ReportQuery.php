@@ -8,7 +8,7 @@ class ReportQuery extends AbstractQuery
 {
     public function init(): void
     {
-        $this->setStartDate(now()->subDays(30)->toDateString());
+        $this->setStartDate(now()->subDays(7)->toDateString());
         $this->setEndDate(now()->toDateString());
         $this->setDimensions(['date']);
         $this->setRowLimit(1000);
