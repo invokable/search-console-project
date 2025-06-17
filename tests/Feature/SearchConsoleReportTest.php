@@ -370,4 +370,64 @@ class SearchConsoleReportTest extends TestCase
             return true;
         });
     }
+
+    /**
+     * Test that the notification uses markdown template correctly.
+     */
+    public function test_notification_uses_markdown_template(): void
+    {
+        // Create mock report data
+        $reportData = [
+            'https://example.com/' => (object) [
+                'rows' => [
+                    (object) [
+                        'keys' => ['2024-01-01'],
+                        'clicks' => 100,
+                        'impressions' => 1000,
+                        'ctr' => 0.1,
+                        'position' => 5.5,
+                    ],
+                ],
+            ],
+        ];
+
+        // Create notification instance
+        $notification = new SearchConsoleReportNotification($reportData);
+
+        // Get the mail message
+        $mailMessage = $notification->toMail((object) []);
+
+        // Assert that the mail message uses markdown
+        $this->assertInstanceOf(\Illuminate\Notifications\Messages\MailMessage::class, $mailMessage);
+
+        // Check that the subject is set correctly
+        $this->assertStringContainsString('Search Console Daily Report', $mailMessage->subject);
+
+        // Verify that markdown data is accessible
+        $this->assertArrayHasKey('markdownContent', $mailMessage->viewData);
+        $this->assertArrayHasKey('generatedAt', $mailMessage->viewData);
+
+        // Verify markdown content contains expected elements
+        $markdownContent = $mailMessage->viewData['markdownContent'];
+        $this->assertStringContainsString('## https://example.com/', $markdownContent);
+        $this->assertStringContainsString('| Date | Clicks | Impressions | CTR (%) | Avg Position |', $markdownContent);
+        $this->assertStringContainsString('| 2024-01-01 | 100 | 1,000 | 10.00 | 5.5 |', $markdownContent);
+
+        // Render the email and verify markdown is converted to HTML
+        $renderedEmail = $mailMessage->render();
+
+        // Verify markdown is converted to HTML with the expected structure
+        // Note: Laravel adds inline CSS styles to email elements
+        $this->assertStringContainsString('<h2', $renderedEmail);
+        $this->assertStringContainsString('https://example.com/</h2>', $renderedEmail);
+        $this->assertStringContainsString('<table', $renderedEmail);
+        $this->assertStringContainsString('<thead', $renderedEmail);
+        $this->assertStringContainsString('<tbody', $renderedEmail);
+        $this->assertStringContainsString('<th', $renderedEmail);
+        $this->assertStringContainsString('Date</th>', $renderedEmail);
+        $this->assertStringContainsString('Clicks</th>', $renderedEmail);
+        $this->assertStringContainsString('<td', $renderedEmail);
+        $this->assertStringContainsString('2024-01-01</td>', $renderedEmail);
+        $this->assertStringContainsString('100</td>', $renderedEmail);
+    }
 }
