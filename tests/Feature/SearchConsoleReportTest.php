@@ -412,5 +412,22 @@ class SearchConsoleReportTest extends TestCase
         $this->assertStringContainsString('## https://example.com/', $markdownContent);
         $this->assertStringContainsString('| Date | Clicks | Impressions | CTR (%) | Avg Position |', $markdownContent);
         $this->assertStringContainsString('| 2024-01-01 | 100 | 1,000 | 10.00 | 5.5 |', $markdownContent);
+
+        // Render the email and verify markdown is converted to HTML
+        $renderedEmail = $mailMessage->render();
+
+        // Verify markdown is converted to HTML with the expected structure
+        // Note: Laravel adds inline CSS styles to email elements
+        $this->assertStringContainsString('<h2', $renderedEmail);
+        $this->assertStringContainsString('https://example.com/</h2>', $renderedEmail);
+        $this->assertStringContainsString('<table', $renderedEmail);
+        $this->assertStringContainsString('<thead', $renderedEmail);
+        $this->assertStringContainsString('<tbody', $renderedEmail);
+        $this->assertStringContainsString('<th', $renderedEmail);
+        $this->assertStringContainsString('Date</th>', $renderedEmail);
+        $this->assertStringContainsString('Clicks</th>', $renderedEmail);
+        $this->assertStringContainsString('<td', $renderedEmail);
+        $this->assertStringContainsString('2024-01-01</td>', $renderedEmail);
+        $this->assertStringContainsString('100</td>', $renderedEmail);
     }
 }
