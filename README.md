@@ -4,11 +4,11 @@ This project is a sample implementation that demonstrates how to use the Google 
 
 ## Overview
 
-The application automatically fetches Google Search Console data and generates daily performance reports that are sent via email. It uses service account authentication to securely access the Google Search Console API and runs daily via GitHub Actions.
+The application automatically fetches Google Search Console data and generates daily performance reports in markdown table format that are sent via email. It uses service account authentication to securely access the Google Search Console API and runs daily via GitHub Actions.
 
 ## Key Features
 
-- **Automated Daily Reports**: Generates performance summaries for the last 30 days
+- **Automated Daily Reports**: Generates daily performance breakdowns for the last 7 days in markdown table format
 - **Service Account Authentication**: Uses Google service account credentials stored as JSON in GitHub Secrets
 - **Email Notifications**: Sends formatted reports via AWS SES
 - **GitHub Actions Integration**: Runs automatically at midnight UTC daily
@@ -35,13 +35,13 @@ The primary command that orchestrates the report generation process:
 
 ### `app/Notifications/SearchConsoleReportNotification.php`
 Formats and sends the email reports:
-- Generates performance summaries with clicks, impressions, CTR, and position data
-- Creates both overall and per-site breakdowns
+- Generates daily performance data for the last 7 days
+- Creates markdown table format showing daily breakdown by site
 - Formats data into readable email content with proper number formatting
 
 ### `app/Search/ReportQuery.php`
 Defines the Search Console API query parameters:
-- Sets date range to last 30 days
+- Sets date range to last 7 days
 - Configures dimensions and row limits
 - Extends the abstract query class from the search console package
 
@@ -144,9 +144,11 @@ vendor/bin/pint
 ## Report Format
 
 The generated reports include:
-- **Overall Performance**: Total clicks, impressions, average CTR, and average position
-- **Site Breakdown**: Individual metrics for each configured site
-- **Time Period**: Data covers the last 30 days
+- **Daily Performance Table**: Markdown table showing daily metrics for each site over the last 7 days
+- **Individual Site Breakdown**: Separate table for each configured site
+- **Daily Metrics**: Clicks, impressions, CTR percentage, and average position for each day
+- **Sorted Data**: Daily data sorted by date (newest first)
+- **Time Period**: Data covers the last 7 days
 - **Timestamp**: Report generation date and time
 
 ## Troubleshooting
