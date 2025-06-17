@@ -288,4 +288,86 @@ class SearchConsoleReportTest extends TestCase
         // Assert notification was sent even with empty data
         Notification::assertSentOnDemand(SearchConsoleReportNotification::class);
     }
+
+    /**
+     * Test that daily data is correctly formatted from 7 days of data.
+     */
+    public function test_formats_daily_data_correctly(): void
+    {
+        // Fake notifications to capture what's sent
+        Notification::fake();
+
+        // Mock the SearchConsole facade with 7 days of data
+        $mockSites = (object) [
+            'siteEntry' => [
+                (object) ['siteUrl' => 'https://example.com/'],
+            ],
+        ];
+
+        $mockReportData = (object) [
+            'rows' => [
+                (object) [
+                    'keys' => ['2024-01-01'],
+                    'clicks' => 100,
+                    'impressions' => 1000,
+                    'ctr' => 0.1,
+                    'position' => 5.5,
+                ],
+                (object) [
+                    'keys' => ['2024-01-02'],
+                    'clicks' => 150,
+                    'impressions' => 1200,
+                    'ctr' => 0.125,
+                    'position' => 4.2,
+                ],
+                (object) [
+                    'keys' => ['2024-01-03'],
+                    'clicks' => 80,
+                    'impressions' => 900,
+                    'ctr' => 0.089,
+                    'position' => 6.1,
+                ],
+            ],
+        ];
+
+        SearchConsole::expects('listSites')
+            ->once()
+            ->andReturn($mockSites);
+
+        SearchConsole::expects('query')
+            ->once()
+            ->with('https://example.com/', Mockery::type(ReportQuery::class))
+            ->andReturn($mockReportData);
+
+        // Run the command
+        $this->artisan('sc:report')
+            ->expectsOutput('Fetching Search Console sites...')
+            ->expectsOutput('Found 1 site(s):')
+            ->assertExitCode(0);
+
+        // Assert notification was sent with daily data
+        Notification::assertSentOnDemand(SearchConsoleReportNotification::class, function ($notification) {
+            // Verify the notification contains daily data, not aggregated data
+            $arrayData = $notification->toArray((object) []);
+
+            $this->assertArrayHasKey('daily_data', $arrayData);
+            $this->assertArrayHasKey('https://example.com/', $arrayData['daily_data']);
+
+            $dailyData = $arrayData['daily_data']['https://example.com/'];
+            $this->assertCount(3, $dailyData);
+
+            // Verify the data is sorted by date (newest first)
+            $this->assertEquals('2024-01-03', $dailyData[0]['date']);
+            $this->assertEquals('2024-01-02', $dailyData[1]['date']);
+            $this->assertEquals('2024-01-01', $dailyData[2]['date']);
+
+            // Verify data structure
+            $this->assertEquals(80, $dailyData[0]['clicks']);
+            $this->assertEquals(900, $dailyData[0]['impressions']);
+            $this->assertEquals(8.9, $dailyData[0]['ctr']); // CTR should be converted to percentage
+            $this->assertEquals(6.1, $dailyData[0]['position']);
+
+            return true;
+        });
+    }
 }
