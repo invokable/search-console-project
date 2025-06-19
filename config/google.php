@@ -21,8 +21,8 @@ return [
     'client_secret' => env('GOOGLE_CLIENT_SECRET', ''),
     'redirect_uri' => env('GOOGLE_REDIRECT', ''),
     'scopes' => ['https://www.googleapis.com/auth/webmasters.readonly'],
-    'access_type' => 'online',
-    'approval_prompt' => 'auto',
+    'access_type' => 'offline',
+    'prompt' => 'consent select_account',
 
     /*
     |----------------------------------------------------------------------------
