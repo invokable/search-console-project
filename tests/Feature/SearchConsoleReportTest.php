@@ -4,6 +4,8 @@ namespace Tests\Feature;
 
 use App\Notifications\SearchConsoleReportNotification;
 use App\Search\ReportQuery;
+use Illuminate\Notifications\AnonymousNotifiable;
+use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Support\Facades\Notification;
 use Mockery;
 use Revolution\Google\SearchConsole\Facades\SearchConsole;
@@ -72,7 +74,7 @@ class SearchConsoleReportTest extends TestCase
         Notification::assertSentOnDemand(SearchConsoleReportNotification::class, function ($notification, $channels, $notifiable) {
             // Verify the notification has the expected report data
             $this->assertEquals(['mail'], $channels);
-            $this->assertInstanceOf(\Illuminate\Notifications\AnonymousNotifiable::class, $notifiable);
+            $this->assertInstanceOf(AnonymousNotifiable::class, $notifiable);
 
             return true;
         });
@@ -398,7 +400,7 @@ class SearchConsoleReportTest extends TestCase
         $mailMessage = $notification->toMail((object) []);
 
         // Assert that the mail message uses markdown
-        $this->assertInstanceOf(\Illuminate\Notifications\Messages\MailMessage::class, $mailMessage);
+        $this->assertInstanceOf(MailMessage::class, $mailMessage);
 
         // Check that the subject is set correctly
         $this->assertStringContainsString('Search Console Daily Report', $mailMessage->subject);
