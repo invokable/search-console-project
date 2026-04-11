@@ -62,16 +62,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.378.1",
+            "version": "3.378.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "c7a07701703e95c888a24959d5ea426c3d374240"
+                "reference": "df2a6c362ddce2ede3ac3a8286f5788847e614b4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/c7a07701703e95c888a24959d5ea426c3d374240",
-                "reference": "c7a07701703e95c888a24959d5ea426c3d374240",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/df2a6c362ddce2ede3ac3a8286f5788847e614b4",
+                "reference": "df2a6c362ddce2ede3ac3a8286f5788847e614b4",
                 "shasum": ""
             },
             "require": {
@@ -153,9 +153,9 @@
             "support": {
                 "forum": "https://github.com/aws/aws-sdk-php/discussions",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.378.1"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.378.2"
             },
-            "time": "2026-04-09T18:16:50+00:00"
+            "time": "2026-04-10T18:13:27+00:00"
         },
         {
             "name": "brick/math",
@@ -3189,16 +3189,16 @@
         },
         {
             "name": "phpseclib/phpseclib",
-            "version": "3.0.50",
+            "version": "3.0.51",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpseclib/phpseclib.git",
-                "reference": "aa6ad8321ed103dc3624fb600a25b66ebf78ec7b"
+                "reference": "d59c94077f9c9915abb51ddb52ce85188ece1748"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/aa6ad8321ed103dc3624fb600a25b66ebf78ec7b",
-                "reference": "aa6ad8321ed103dc3624fb600a25b66ebf78ec7b",
+                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/d59c94077f9c9915abb51ddb52ce85188ece1748",
+                "reference": "d59c94077f9c9915abb51ddb52ce85188ece1748",
                 "shasum": ""
             },
             "require": {
@@ -3279,7 +3279,7 @@
             ],
             "support": {
                 "issues": "https://github.com/phpseclib/phpseclib/issues",
-                "source": "https://github.com/phpseclib/phpseclib/tree/3.0.50"
+                "source": "https://github.com/phpseclib/phpseclib/tree/3.0.51"
             },
             "funding": [
                 {
@@ -3295,7 +3295,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-03-19T02:57:58+00:00"
+            "time": "2026-04-10T01:33:53+00:00"
         },
         {
             "name": "psr/cache",
@@ -7015,16 +7015,16 @@
         },
         {
             "name": "laravel/boost",
-            "version": "v2.4.2",
+            "version": "v2.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/boost.git",
-                "reference": "74fedf18048d382e04eded004abe2ad1ee1d9a97"
+                "reference": "841d52905728cfac9f93c778a1758e740ce9a367"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/boost/zipball/74fedf18048d382e04eded004abe2ad1ee1d9a97",
-                "reference": "74fedf18048d382e04eded004abe2ad1ee1d9a97",
+                "url": "https://api.github.com/repos/laravel/boost/zipball/841d52905728cfac9f93c778a1758e740ce9a367",
+                "reference": "841d52905728cfac9f93c778a1758e740ce9a367",
                 "shasum": ""
             },
             "require": {
@@ -7077,7 +7077,7 @@
                 "issues": "https://github.com/laravel/boost/issues",
                 "source": "https://github.com/laravel/boost"
             },
-            "time": "2026-04-07T14:34:49+00:00"
+            "time": "2026-04-10T15:59:10+00:00"
         },
         {
             "name": "laravel/mcp",
