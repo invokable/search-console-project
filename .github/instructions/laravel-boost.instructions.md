@@ -163,6 +163,6 @@ This project has domain-specific skills available in `**/skills/**`. You MUST ac
 ## Laravel Boost for GitHub Copilot CLI
 
 This project uses Laravel Boost to provide MCP (Model Context Protocol) tools for GitHub Copilot CLI.
-The MCP server is configured in `.mcp.json` and automatically loaded by Copilot CLI.
+The MCP server is configured in `.github/mcp.json` and automatically loaded by Copilot CLI.
 
 </laravel-boost-guidelines>
