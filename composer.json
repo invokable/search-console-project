@@ -10,7 +10,6 @@
     "license": "MIT",
     "require": {
         "php": "^8.4",
-        "aws/aws-sdk-php": "^3.344",
         "laravel/framework": "^13.0",
         "laravel/tinker": "^3.0",
         "resend/resend-php": "^1.16",
