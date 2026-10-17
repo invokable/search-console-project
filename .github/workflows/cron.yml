@@ -2,7 +2,7 @@ name: cron
 
 on:
   workflow_dispatch:
-  push:
+  #push:
   schedule:
     - cron: '0 0 * * *' #UTC
 
