@@ -33,13 +33,11 @@ jobs:
       - name: Run Command
         run: php artisan sc:report
         env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
-          MAIL_MAILER: 'ses'
+          MAIL_MAILER: 'resend'
           MAIL_FROM_ADDRESS: ${{ secrets.MAIL_FROM_ADDRESS }}
           MAIL_FROM_NAME: ${{ secrets.MAIL_FROM_NAME }}
           MAIL_TO_ADDRESS: ${{ secrets.MAIL_TO_ADDRESS }}
           MAIL_TO_NAME: ${{ secrets.MAIL_TO_NAME }}
           GOOGLE_SERVICE_ENABLED: true
           GOOGLE_SERVICE_ACCOUNT_JSON_LOCATION: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON_LOCATION }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
