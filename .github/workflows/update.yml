@@ -6,6 +6,6 @@ on:
 
 jobs:
   composer:
-    uses: kawax/composer-workflow/.github/workflows/update.yml@888e53044760bcd5a8dfcb8501ae7d48f58ab10c # v1
+    uses: kawax/composer-workflow/.github/workflows/update.yml@6ff5e07c74260b6574f565da4fbd8381aab9ed25 # v1
     secrets:
       token: ${{ secrets.GITHUB_TOKEN }}
